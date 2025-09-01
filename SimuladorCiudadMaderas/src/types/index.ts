@@ -1,7 +1,7 @@
 export interface ResultadoSimulacion {
-  pagoMensual: number;
-  montoFinanciar: number;
   engancheMonto: number;
+  montoFinanciar: number;
+  pagoMensual: number;
   totalIntereses: number;
   totalPagado: number;
 }
@@ -12,4 +12,19 @@ export interface TablaAmortizacion {
   interes: number;
   capital: number;
   saldo: number;
+}
+
+export interface ConfiguracionEnganche {
+  id: string;
+  nombre: string;
+  enganchesPermitidos: number[];
+  default: number;
+  activa: boolean;
+}
+
+export interface PagoPorAnio {
+  anio: number;
+  mensualidad: number;
+  meses: number;
+  totalAnual: number;
 }

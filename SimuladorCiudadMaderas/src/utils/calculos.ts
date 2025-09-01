@@ -13,9 +13,23 @@ export const calcularCredito = (
 
   const engancheMonto = precio * (enganchePorcentaje / 100);
   const montoFinanciar = precio - engancheMonto;
-  const tasaMensual = tasaInteresAnual / 100 / 12;
   
+  if (montoFinanciar <= 0) {
+    return {
+      resultado: {
+        engancheMonto,
+        montoFinanciar: 0,
+        pagoMensual: 0,
+        totalIntereses: 0,
+        totalPagado: engancheMonto
+      },
+      tabla: []
+    };
+  }
+
+  const tasaMensual = tasaInteresAnual / 100 / 12;
   let pagoMensual = 0;
+
   if (tasaMensual > 0) {
     pagoMensual = montoFinanciar * (tasaMensual * Math.pow(1 + tasaMensual, plazoMeses)) / 
                   (Math.pow(1 + tasaMensual, plazoMeses) - 1);
@@ -42,6 +56,9 @@ export const calcularCredito = (
       capital,
       saldo
     });
+
+    // Si el saldo es 0, terminar
+    if (saldo <= 0) break;
   }
 
   const totalIntereses = pagoMensual * plazoMeses - montoFinanciar;
@@ -49,9 +66,9 @@ export const calcularCredito = (
 
   return {
     resultado: {
-      pagoMensual,
-      montoFinanciar,
       engancheMonto,
+      montoFinanciar,
+      pagoMensual,
       totalIntereses,
       totalPagado
     },
@@ -62,6 +79,8 @@ export const calcularCredito = (
 export const formatearMoneda = (valor: number): string => {
   return new Intl.NumberFormat('es-MX', {
     style: 'currency',
-    currency: 'MXN'
+    currency: 'MXN',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
   }).format(valor);
 };
